@@ -1,0 +1,75 @@
+---
+sidebar_position: 2
+---
+
+# Client Configuration
+
+IAM Zero client libraries are configured with three mechanisms:
+
+1. Initialisation variables passed to the `iamzero` object in your programming language
+2. Environment variables
+3. The IAM Zero config file (`~/.iamzero.ini`)
+
+Initialisation variables take precedence over environment variables, and environment variables take precedence over the IAM Zero config file. For example, if you had set `debug = false` in your IAM Zero config file, but then set `IAMZERO_DEBUG=true` as an environment variable, the environment variable would take precedence and the `debug` configuration variable would be `True`.
+
+## Available configuration variables
+
+The following configuration variables exist for IAM Zero:
+
+| Variable            | Environment Variable        | Description                                                                                    | Default Value         |
+| ------------------- | --------------------------- | ---------------------------------------------------------------------------------------------- | --------------------- |
+| url                 | IAMZERO_URL                 | The URL of the IAM Zero server to dispatch alerts to                                           | http://localhost:9090 |
+| debug               | IAMZERO_DEBUG               | Whether to print additional debug logging messages                                             | False                 |
+| token               | IAMZERO_TOKEN               | The [authentication token](/docs/configuration/authentication) for the IAM Zero server         | -                     |
+| max_batch_size      | IAMZERO_MAX_BATCH_SIZE      | The maximum number of alerts to send in a single batch to the IAM Zero server                  | 100                   |
+| send_frequency      | IAMZERO_SEND_FREQUENCY      | The frequency in seconds at which to dispatch batches of alerts to the IAM Zero server         | 0.25                  |
+| user_agent_addition | IAMZERO_USER_AGENT_ADDITION | An additional string to be added to the User Agent header in dispatches to the IAM Zero server | -                     |
+
+## Initialisation variables
+
+When initialisating the IAM Zero client in your application you can inject any of the above variables to the client. This is well suited if you have any custom logic around configuring the IAM Zero client. An example configuration is shown below.
+
+<Tabs
+  groupId="programming-language"
+  defaultValue="python"
+  values={[{ label: "Python", value: "python" }]}
+>
+  <TabItem value="python">
+
+```python
+import iamzero
+iamzero.init(debug=True, url="http://localhost:9091", token="123456")
+```
+
+   </TabItem>
+</Tabs>
+
+:::note
+Initialisation variables passed to the iamzero initialisation method at runtime will always take precedence over other configuration methods.
+:::
+
+## Environment variables
+
+Additionally, you can configure the IAM Zero client through environment variables. This is well suited to running IAM Zero with containerised or serverless applications. The relevant environment variables are shown in the table above for each setting.
+
+## IAM Zero config file
+
+Finally, you can configure the IAM Zero client through a configuration file. This is well suited to running IAM Zero in a development environment, especially if you are running an IAM Zero server to build least-permission policies across multiple applications and projects that your team is working on. By default, this file is stored in `~/.iamzero.ini` on Mac or Linux based systems. On Windows, you can determine the location of this folder as follows:
+
+```cmd
+python -c "import os; print(os.path.expanduser(path='~/.iamzero.ini'))"
+```
+
+This file is configured automatically when you run the `iamzero local` command. The format of the file is similar to below:
+
+```ini
+[iamzero]
+token = 172db0070b6576f33b06eeab9a6eff70
+url   = http://localhost:9090
+```
+
+Including any of the variables in the table above in the `iamzero` section of the file will configure the IAM Zero client accordingly.
+
+:::note
+Note that both environment variables and initialisation variables will override any config set in the IAM Zero config file.
+:::

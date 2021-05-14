@@ -1,0 +1,40 @@
+---
+sidebar_position: 4
+---
+
+# FAQ
+
+## How is IAM Zero different to AWS Access Analyser or Google Cloud Policy Analyzer?
+
+Services such as AWS Access Analyser also allow cloud practitioners to achieve least-privilege access and reduce their IAM risk.
+
+IAM Zero is focused on creating IAM workflows which have _much_ faster feedback loops than these services. IAM Zero allows for instant policy recommendations to be made, which we think unlocks a lot of use cases which existing IAM tools cannot support such as:
+
+1. Instant creation and approval of least-privilege infrastructure deployment roles for Terraform and similar tools
+2. Breakglass workflows to temporarily upgrade an IAM role (with an approval workflow) for an SRE to respond to an incident
+3. Development of IAM roles alongside application development in serverless environments
+4. Easy creation of true least-privileged roles for teams and individuals starting from zero permissions
+
+## How is IAM Zero licensed?
+
+IAM Zero is an open source tool and licensed under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
+
+You can use it at work, on private projects and in proprietary code.
+
+## Can I use IAM Zero on my work projects?
+
+Yes, you can. For larger teams, you may want to consider [IAM Zero Enterprise](/enterprise).
+
+## How do you make money?
+
+IAM Zero is an open source tool and does not make money from this version of the tool. We do offer an Enterprise version of the tool, which is optimised for larger organisations and larger teams. We charge a fee for use of this version.
+
+## How is IAM Zero supported?
+
+IAM Zero is created and supported by Common Fate. Common Fate is an open source software company created to maintain and provide governance over development security tools like IAM Zero. You can learn more about Common Fate [here](https://commonfate.io/).
+
+## Where does IAM Zero store data?
+
+IAM Zero runs as a self-hosted service in your own cloud environment. The IAM Zero client libraries send data to this self-hosted service and your data does not leave your own environment.
+
+We use [Plausible](https://plausible.io/) as a privacy-focused, GDPR-compliant analytics tracker to track visits to our landing page and documentation.

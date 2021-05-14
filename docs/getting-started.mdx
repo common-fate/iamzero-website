@@ -1,0 +1,235 @@
+---
+sidebar_position: 1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Getting Started
+
+The easiest way to get started with IAM Zero is to run it locally on your own computer.
+
+## Installation
+
+<Tabs
+  defaultValue="from-source"
+  values={[{ label: "Compile from source", value: "from-source" }]}
+>
+  <TabItem value="from-source">
+
+We don't yet host releases of IAM Zero but you can build the CLI from source. You'll need the following tools installed:
+
+- [Go 1.16](https://golang.org/doc/install)
+- [NodeJS 14](https://nodejs.org/en/download/)
+- [Yarn 1.22](https://classic.yarnpkg.com/en/docs/install)
+
+Follow these steps to compile IAM Zero locally:
+
+```bash
+git clone https://github.com/common-fate/iamzero
+cd iamzero/web
+yarn install --frozen-lockfile
+yarn build
+cd ..
+go build -o bin/iamzero cmd/main.go
+```
+
+   </TabItem>
+</Tabs>
+
+A binary will be created at `bin/iamzero`, relative to the folder that you cloned the repository to.
+
+Finally, make sure that the `iamzero` binary is available on your `PATH`. This process will differ depending on your operating system.
+
+<Tabs
+  defaultValue="unix"
+  values={[{ label: "Mac or Linux", value: "unix" }]}
+>
+  <TabItem value="unix">
+
+Print a list of locations in your `PATH`.
+
+```bash
+echo $PATH
+```
+
+Move the IAM Zero binary to one of the listed locations. The below command assumes that your `PATH` includes `/usr/local/bin/`, but you can change this if the locations are different.
+
+```bash
+mv bin/iamzero /usr/local/bin/
+```
+
+   </TabItem>
+</Tabs>
+
+## Verify the Installation
+
+Verify that the installation worked by opening a new terminal session and running `iamzero`.
+
+```bash
+iamzero
+```
+
+You should receive an output similar to below:
+
+```
+USAGE
+  iamzero [flags] <subcommand> [flags] [<arg>...]
+
+SUBCOMMANDS
+  local   Run a local iamzero server
+  server  Start an iamzero server (for server usage)
+
+FLAGS
+  -v false  log verbose output
+flag: help requested
+```
+
+## Running the console
+
+Run the console locally with the following command:
+
+```shell
+iamzero local
+```
+
+A new tab should open in your web browser with the IAM Zero Console:
+
+![IAM Zero Console](/img/console.png)
+
+<details>
+  <summary>Help - the IAM Zero Console didn't open automatically for me!</summary>
+
+# Manually launching the IAM Zero Console
+
+If your web browser does not automatically launch, visit http://localhost:9090 in a new tab. You will be prompted with a login screen similar to below:
+
+![IAM Zero Login](/img/login.png)
+
+The `iamzero local` command will have automatically generated an authentication token for you. This is saved to your home directory in MacOS or Linux systems as `~/.iamzero.ini`.
+
+To retrieve the token, run the command
+
+```
+cat ~/.iamzero.ini
+```
+
+You should see an output similar to below.
+
+```ini
+[iamzero]
+token = 172db0070b6576f33b06eeab9a6eff70
+url   = http://localhost:9090
+```
+
+Copy the `token` string and paste it into the input on the login page in your web browser. You should now be able to access the IAM Zero Console.
+
+If you are running a Windows operating system or you cannot find your token please [ask for help on our Slack](https://join.slack.com/t/commonfatecommunity/shared_invite/zt-q4m96ypu-_gYlRWD3k5rIsaSsqP7QMg)
+
+</details>
+
+## Sending a permissions alert to IAM Zero
+
+### Creating an AWS user
+
+:::info
+The below section will create an IAM user in your AWS account. If you have a different identity management setup (for example, if you use AWS SSO or IAM roles rather than user accounts) you may read through this section and then implement your own IAM roles accordingly to test IAM Zero.
+
+The important thing for testing is that you have created a role which has no IAM policy or permissions, so that we can capture permissions errors when the role is used to start quickly building a least-privilege access policy.
+:::
+
+**You will need administrator access to an AWS account with the ability to create IAM users to complete this section.**
+
+Sign in to the AWS Console. Once you are logged in, visit the link below:
+
+https://console.aws.amazon.com/iam/home#/users$new?step=tags&accessKey&userNames=iamzero-test-user
+
+You'll see a screen similar to below.
+
+![The AWS IAM console showing the "create a user" step](/img/aws-iam-create-user.png)
+
+Click the "Next: Permissions" button to proceed. **Don't add any permissions here as we will use IAM Zero to build permissions instead**. Complete the wizard and then copy the AWS CLI credentials to your `~/.aws/credentials` file:
+
+`~/.aws/credentials`
+
+```ini
+[iamzero-test]
+aws_access_key_id=YOUR_ACCESS_KEY_FROM_THE_USER_YOU_GENERATED
+aws_secret_access_key=YOUR_SECRET_KEY_FROM_THE_USER_YOU_GENERATED
+```
+
+`~/.aws/config`
+
+```ini
+[iamzero-test]
+region=YOUR_AWS_REGION
+```
+
+You can find more details on configuring your AWS CLI [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
+
+## Run the example script
+
+To get up and running quickly with building least-privilege policies we've created an example script which uses IAM Zero. The script uses `boto3`, the AWS Python Software Development Kit (SDK), to create an S3 bucket.
+
+We'll run the script as the `iamzero-test` AWS user created above, which has _zero_ AWS permissions. By using IAM Zero, every time we try and make a call to an AWS resource we'll instantly get a recommendation to build a least-privilege policy.
+
+First, clone the repository:
+
+```bash
+git clone https://github.com/common-fate/iamzero-python-example
+cd iamzero-python-example
+```
+
+The script we will run is `iamzero_example.py`. You can inspect it in your code editor to see how IAM Zero is loaded and used. The important two lines in the script are:
+
+```python
+import iamzero
+iamzero.init()
+```
+
+Which does all of the configuration and initialisation of IAM Zero for you.
+
+We need to install some Python dependencies - the `iamzero` Python client as well as `boto3`. Run the `setup.sh` script in the repository which creates a [virtual environment](https://docs.python.org/3/library/venv.html) with these installed, accepting the creation of a virtual environment when prompted.
+
+```bash
+./setup.sh
+```
+
+Ensure that we use the `iamzero-test` user by setting our environment variable as follows:
+
+```bash
+export AWS_PROFILE=iamzero-test
+```
+
+:::note
+If you saved your AWS credentials from the previous step to a different profile name, you'll need to change the above command to match your customised name.
+:::
+
+Finally, run the script:
+
+```
+source .venv/bin/activate
+python iamzero_example.py
+```
+
+Open the [local IAM Zero console](http://localhost:9090). You should see a new alert similar to below.
+
+![The IAM Zero console showing an S3:CreateBucket permission error](/img/alert.png)
+
+You can view the alert details which will show you more information.
+
+![The IAM Zero console showing alert details for a S3:CreateBucket permission error](/img/alert-details.png)
+
+:::warning
+You'll see that there is an "Apply" button to create the IAM policy. This currently works but is not yet properly documented. If you want to apply the alert you'll need to ensure that the environment you are running the `iamzero local` command in has permission to create IAM policies. We're actively working on ways to better control IAM policy generation and would appreciate any feedback on [this GitHub issue](https://github.com/common-fate/iamzero/issues/9).
+:::
+
+## Clean up
+
+Visit the [AWS IAM console](https://console.aws.amazon.com/iam/home#/users) and remove the test user that you created.
+
+To stop running IAM Zero locally, simply close the terminal window running the `iamzero local` command.
+
+## Try it in your own applications and scripts
+
+Now that you've got IAM Zero up and running, follow the instructions in the [Usage section](/docs/usage/app-development) for details on how to capture permissions issues in your own applications.

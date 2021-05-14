@@ -1,0 +1,51 @@
+---
+sidebar_position: 1
+---
+
+# Application Development
+
+## Supported languages
+
+Currently our supported languages for IAM Zero instrumentation are:
+
+- Python
+
+## Installing the client library in your codebase
+
+IAM Zero can capture permission errors when you are developing services which use cloud resources, and recommend least-privilege policies automatically. To do this we provide a client library which can be installed in your project.
+
+The client libraries are lightweight and use the same techniques the error-tracking libraries like Sentry and BugSnag to detect issues. They are also designed to be added and removed easily, so you can add the client while developing a service and then remove it once you're happy with the IAM policies you've built for it.
+
+To start capturing permissions errors, install the IAM Zero client library:
+
+<Tabs
+  groupId="programming-language"
+  defaultValue="python"
+  values={[{ label: "Python", value: "python" }]}
+>
+  <TabItem value="python">
+
+```bash
+pip install iamzero
+```
+
+   </TabItem>
+</Tabs>
+
+Then, initialise IAM Zero as early as possible in your program's startup script:
+
+<Tabs
+  groupId="programming-language"
+  defaultValue="python"
+  values={[{ label: "Python", value: "python" }]}
+>
+  <TabItem value="python">
+
+```py
+import iamzero
+
+iamzero.init()
+```
+
+   </TabItem>
+</Tabs>
