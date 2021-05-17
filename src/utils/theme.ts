@@ -2,13 +2,7 @@ import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 // https://chakra-ui.com/docs/features/color-mode#updating-the-theme-config
 
-const config: ThemeConfig = {
-  initialColorMode: "light",
-  useSystemColorMode: false,
-};
-
 const theme = extendTheme({
-  config,
   colors: {
     primaryLight: "#619eff",
     primaryDark: "#4d83db",
