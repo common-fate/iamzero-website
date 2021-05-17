@@ -1,0 +1,45 @@
+---
+sidebar_position: 4
+---
+
+# Least-Privilege Advisories
+
+IAM Zero maintains a library of Least-Privilege Advisories: a set of least-permission policy generators which match permission errors to IAM policies. Example access advisories include simple policy generation granting read and access to specific S3 buckets, as well as more complex policies involving creating KMS grants to grant access to resources encrypted with a Customer Managed Key.
+
+Currently the advisory library resides in the [IAM Zero GitHub repository](https://github.com/common-fate/iamzero/tree/main/pkg/recommendations) but we have an [open GitHub issue](https://github.com/common-fate/iamzero/issues/10) around migrating these to a standalone library so that other projects can utilise these.
+
+Currently we have Least-Privilege Advisories for AWS S3 and DynamoDB, including a proof of concept advisory for DynamoDB with Customer Managed Key encryption. We welcome contributions to the advisory library. All advisory contributions will be reviewed by an IAM Zero core maintainer against least-privilege practices.
+
+## Contributing Advisories
+
+IAM Zero supports two types of Least-Privilege Advisories: JSON and Code-Based. The overall advisory library can be found in [`recommendations.go`](https://github.com/common-fate/iamzero/blob/main/pkg/recommendations/recommendations.go) in the IAM Zero repository. We plan to improve documentation and make this package more contributor-friendly when it is extracted to it's own repository as per the GitHub issue above.
+
+:::note
+We welcome discussion on building advisories on our Slack - if you'd like to contribute your own please [join us there](https://join.slack.com/t/commonfatecommunity/shared_invite/zt-q4m96ypu-_gYlRWD3k5rIsaSsqP7QMg).
+:::
+
+### JSON Advisories
+
+A JSON Advisory is an IAM policy template. The template variables will be captured from the AWS SDK call intercepted by IAM Zero. We use the [standard Go templating package](https://golang.org/pkg/text/template/) for this. An example JSON Advisory is shown below:
+
+```go
+GetJSONAdvice(JSONPolicyParams{
+    Policy: []Statement{{
+        Action:   []string{"s3:PutObject"},
+        Resource: []string{"arn:aws:s3:::{{ .Bucket }}/{{ .Key }}"},
+    }},
+    Comment: "Allow PutObject access to the specific key",
+}),
+```
+
+The `{{ .Bucket }}` and `{{ .Key }}` variables will be replaced with the actual bucket and key as captured by the IAM Zero client. Currently only the `Resource` field allows templating.
+
+To create a new JSON Advisory, run a local IAM Zero server and make calls to the AWS API. Your IAM Zero server will intercept the permissions errors and you will be able to see what variables are available to create templates.
+
+### Code-Based Advisories
+
+IAM Zero also supports Code-Based Advisories. These advisories are intended to handle more complex use cases, such as creating grants or policies on other AWS resources (like a KMS key used to encrypt an S3 bucket or DynamoDB table). Code-Based Advisories can utilise the AWS SDK and will execute in the same context as the IAM Zero server. Code-Based Advisories will be reviewed by the IAM Zero core maintainers before being included in the IAM Zero distribution. An example of a Code-Based Advisory is [`dynamodb_kms.go`](https://github.com/common-fate/iamzero/blob/main/pkg/recommendations/dynamodb_kms.go).
+
+:::note
+Both JSON and Code-Based Advisories implement the [`Advice` interface](https://github.com/common-fate/iamzero/blob/main/pkg/recommendations/recommendations.go#L38-L42). If you would like to contribute new types of advisories to include strategies like Attribute-Based Access Control (ABAC), as long as they meet the interface they should work with IAM Zero.
+:::
