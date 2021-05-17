@@ -212,6 +212,12 @@ source .venv/bin/activate
 python iamzero_example.py
 ```
 
+The Python script should output an error similar to below:
+
+```bash
+botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the CreateBucket operation: Access Denied
+```
+
 Open the [local IAM Zero console](http://localhost:9090). You should see a new alert similar to below.
 
 ![The IAM Zero console showing an S3:CreateBucket permission error](/img/alert.png)
