@@ -16,6 +16,7 @@ module.exports = {
   themeConfig: {
     image: "img/meta.png",
     colorMode: {
+      defaultMode: "light",
       disableSwitch: true,
       respectPrefersColorScheme: false,
     },
