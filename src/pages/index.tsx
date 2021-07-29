@@ -1,4 +1,11 @@
-import { EmailIcon, LockIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  EmailIcon,
+  LockIcon,
+  MoonIcon,
+  RepeatIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
 import {
   AspectRatio,
   Box,
@@ -37,6 +44,7 @@ import PythonLogo from "../components/logos/PythonLogo";
 import TerraformLogo from "../components/logos/TerraformLogo";
 import VSCodeLogo from "../components/logos/VSCodeLogo";
 import { SupportedProviderBox } from "../components/SupportedProviderBox";
+import { WindowIcon } from "../utils/CustomIcons";
 import theme from "../utils/theme";
 
 const MAX_WIDTH = "1200px";
@@ -47,7 +55,7 @@ const index = () => {
   return (
     <ChakraProvider theme={theme}>
       <Layout
-        itle={`${siteConfig.title}`}
+        title={`${siteConfig.title}`}
         description="IAM simplified and secure"
       >
         <Container
@@ -95,20 +103,43 @@ const index = () => {
                   fontSize="1.2rem"
                   size="lg"
                   colorScheme="cfBlue"
-                  rightIcon={<FaArrowRight fontSize="0.8em" />}
+                  transition="all .2s ease"
+                  className="arrowBtn"
+                  _hover={{ transform: "scale(1.02)" }}
+                  rightIcon={
+                    <ArrowForwardIcon
+                      transition="all .2s ease"
+                      sx={{
+                        ".arrowBtn:hover &": { transform: "translateX(2px)" },
+                      }}
+                    />
+                  }
                 >
                   Get Started
                 </Button>
               </Stack>
             </Flex>
-            <AspectRatio ratio={16 / 9} maxW="800px" flex={4}>
+            <AspectRatio
+              ratio={16 / 9}
+              maxW="800px"
+              flex={4}
+              sx={{
+                // Blurred 'halo' around video wrapper
+                "&::before": {
+                  background:
+                    "linear-gradient(to left top, #30d15e92, #619EFF);",
+                  filter: "blur(34px);",
+                },
+              }}
+            >
               <Flex
                 as="video"
                 autoPlay
                 muted
                 playsInline
                 // maxW="800px"
-                shadow="md"
+                loop
+                rounded="md"
               >
                 <source src="demo.mp4" type="video/mp4" />
               </Flex>
@@ -155,12 +186,12 @@ const index = () => {
             gap={6}
           >
             <FeatureBox
-              icon={<MoonIcon color="cfBlue.500" boxSize="24px" />}
+              icon={<WindowIcon color="cfBlue.500" boxSize="24px" />}
               heading="Transparent"
               body="IAM Zero can run transparently on any or all of your roles just by adding the client library."
             />
             <FeatureBox
-              icon={<SunIcon color="cfBlue.500" boxSize="24px" />}
+              icon={<RepeatIcon color="cfBlue.500" boxSize="24px" />}
               heading="Continuous"
               body="IAM Zero can run as a service to continuously build least-privilege policies for your whole team."
             />
