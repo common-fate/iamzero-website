@@ -20,6 +20,7 @@ export const SupportedProviderBox: React.FC<Props> = ({
       alignItems="center"
       display="flex"
       justifyContent="center"
+      rounded="md"
     >
       {tooltip ? (
         <Tooltip label={tooltip} aria-label={tooltip}>
