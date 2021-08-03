@@ -12,18 +12,45 @@ IAM Zero client libraries are configured with three mechanisms:
 
 Initialisation variables take precedence over environment variables, and environment variables take precedence over the IAM Zero config file. For example, if you had set `debug = false` in your IAM Zero config file, but then set `IAMZERO_DEBUG=true` as an environment variable, the environment variable would take precedence and the `debug` configuration variable would be `True`.
 
+## Event Transport Configuration
+
+The mechanism that IAM Zero uses to send events from the client to the collector can be customised. This may be useful if you have existing event aggregation or logging infrastructure you'd like to re-use in your cloud environment. The transport mode can be customised through the `transport` configuration variable as shown in the configuration table below.
+
+### HTTP Transport
+
+HTTP transport is the default transport mode. In this mode, a HTTP POST request is sent to the `/api/v1/events` endpoint, containing a batch of events captured by IAM Zero. The IAM Zero token is included as the `x-iamzero-token` HTTP header in this request.
+
+HTTP Transport is supported in the following client libraries:
+
+- Python
+
+### SQS Transport
+
+SQS transport uses an AWS SQS queue to dispatch events to the server. To configure SQS transport, set the `transport` configuration variable to `"sqs"`. The queue URL must be specified as `transport_sqs_queue_url`.
+
+In the Python client, you can additionally specify a custom AWS session using the `transport_custom_aws_session` variable. Note that this must be passed in the call to `iamzero.init()` rather than through an environment variable. Using a custom session you can configure a separate profile to use for transporting events, compared to the profile that your application is executing as.
+
+In the SQS transport the client version and the IAM Zero token are included as SQS message attributes.
+
+SQS Transport is supported in the following client libraries:
+
+- Python
+
 ## Available configuration variables
 
 The following configuration variables exist for IAM Zero:
 
-| Variable            | Environment Variable        | Description                                                                                    | Default Value         |
-| ------------------- | --------------------------- | ---------------------------------------------------------------------------------------------- | --------------------- |
-| url                 | IAMZERO_URL                 | The URL of the IAM Zero server to dispatch alerts to                                           | http://localhost:9090 |
-| debug               | IAMZERO_DEBUG               | Whether to print additional debug logging messages                                             | False                 |
-| token               | IAMZERO_TOKEN               | The [authentication token](/docs/configuration/authentication) for the IAM Zero server         | -                     |
-| max_batch_size      | IAMZERO_MAX_BATCH_SIZE      | The maximum number of alerts to send in a single batch to the IAM Zero server                  | 100                   |
-| send_frequency      | IAMZERO_SEND_FREQUENCY      | The frequency in seconds at which to dispatch batches of alerts to the IAM Zero server         | 0.25                  |
-| user_agent_addition | IAMZERO_USER_AGENT_ADDITION | An additional string to be added to the User Agent header in dispatches to the IAM Zero server | -                     |
+| Variable                     | Environment Variable            | Description                                                                                    | Default Value         |
+| ---------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------- |
+| url                          | IAMZERO_URL                     | The URL of the IAM Zero server to dispatch alerts to                                           | http://localhost:9090 |
+| debug                        | IAMZERO_DEBUG                   | Whether to print additional debug logging messages                                             | False                 |
+| token                        | IAMZERO_TOKEN                   | The [authentication token](/docs/configuration/authentication) for the IAM Zero server         | -                     |
+| max_batch_size               | IAMZERO_MAX_BATCH_SIZE          | The maximum number of alerts to send in a single batch to the IAM Zero server                  | 100                   |
+| send_frequency               | IAMZERO_SEND_FREQUENCY          | The frequency in seconds at which to dispatch batches of alerts to the IAM Zero server         | 0.25                  |
+| user_agent_addition          | IAMZERO_USER_AGENT_ADDITION     | An additional string to be added to the User Agent header in dispatches to the IAM Zero server | -                     |
+| transport                    | IAMZERO_TRANSPORT               | The transport mechanism to use (one of "http", "sqs")                                          | http                  |
+| transport_custom_aws_session | -                               | A custom `boto3` session to use when dispatching messages if the SQS transport is used         | -                     |
+| transport_sqs_queue_url      | IAMZERO_TRANSPORT_SQS_QUEUE_URL | The queue URL of the SQS queue to dispatch events to                                           | -                     |
 
 ## Initialisation variables
 
