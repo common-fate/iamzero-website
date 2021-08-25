@@ -2,9 +2,7 @@ import {
   ArrowForwardIcon,
   EmailIcon,
   LockIcon,
-  MoonIcon,
   RepeatIcon,
-  SunIcon,
 } from "@chakra-ui/icons";
 import {
   AspectRatio,
@@ -24,10 +22,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Head from "@docusaurus/Head";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import React from "react";
-import { FaArrowRight } from "react-icons/fa";
 import { SiGnubash } from "react-icons/si";
 import { Link } from "react-router-dom";
 import FeatureBox from "../components/FeatureBox";
@@ -58,6 +56,10 @@ const index = () => {
         title={`${siteConfig.title}`}
         description="IAM simplified and secure"
       >
+        <Head>
+          <link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
+          <script src="/asciinema-player.js" />
+        </Head>
         <Container
           as="section"
           color="gray.700"
