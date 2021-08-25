@@ -14,6 +14,14 @@ module.exports = {
   organizationName: "Common Fate",
   projectName: "IAM Zero",
   themeConfig: {
+    announcementBar: {
+      id: "infrastructure_as_code_preview", // Any value that will identify this message.
+      content:
+        'Developer Preview: apply least privilege findings directly to your AWS CDK or Terraform code. <a target="_blank" rel="noopener noreferrer" href="/infrastructure-as-code">Find out more.</a>',
+      backgroundColor: "#1f72fe", // Defaults to `#fff`.
+      textColor: "#fff", // Defaults to `#000`.
+      isCloseable: false, // Defaults to `true`.
+    },
     image: "img/meta.png",
     colorMode: {
       defaultMode: "light",
@@ -37,6 +45,12 @@ module.exports = {
           to: "enterprise",
           activeBasePath: "enterprise",
           label: "Enterprise",
+          position: "left",
+        },
+        {
+          to: "infrastructure-as-code",
+          activeBasePath: "infrastructure-as-code",
+          label: "Infrastructure as Code",
           position: "left",
         },
         {
