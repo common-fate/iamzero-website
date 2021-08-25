@@ -8,14 +8,12 @@ import {
   Flex,
   Heading,
   HStack,
+  Image,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import Head from "@docusaurus/Head";
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import React from "react";
-import AsciinemaPlayer from "../components/AsciinemaPlayer";
 import { HowItWorksBox } from "../components/HowItWorksBox";
 import theme from "../utils/theme";
 
@@ -30,10 +28,6 @@ const infraAsCode = () => {
         title="Infrastructure as Code"
         description="IAM simplified and secure"
       >
-        <Head>
-          <link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
-          <script src="/asciinema-player.js" />
-        </Head>
         <Container
           as="section"
           color="gray.700"
@@ -111,7 +105,10 @@ const infraAsCode = () => {
               }}
             >
               <Flex rounded="md">
-                <AsciinemaPlayer src="/iamzero-iac.cast" />
+                <Image
+                  src="/img/iamzero-applier.png"
+                  alt="A screenshot of the IAM Zero command-line application, showing an IAM policy in AWS CDK source code automatically being fixed"
+                />
               </Flex>
             </AspectRatio>
           </Stack>
