@@ -102,6 +102,9 @@ const infraAsCode = () => {
                     "linear-gradient(to left top, #30d15e92, #619EFF);",
                   filter: "blur(34px);",
                 },
+                "&>div": {
+                  overflow: "visible",
+                },
               }}
             >
               <Flex rounded="md">
