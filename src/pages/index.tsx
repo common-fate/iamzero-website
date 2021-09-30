@@ -327,7 +327,7 @@ const index = () => {
 
           <Box
             as="form"
-            action="https://commonfate.us1.list-manage.com/subscribe/post"
+            action="https://commonfate.us5.list-manage.com/subscribe/post?u=69860be79239e5e8d492037c9&amp;id=2adfac0c83"
             method="POST"
             maxW={{ base: "100%", md: "330px" }}
             p={5}
