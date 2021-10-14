@@ -77,7 +77,8 @@ const index = () => {
                   sm: "3rem",
                   lg: "4rem",
                 }}
-                fontFamily="heading"
+                fontFamily="Rubik"
+                fontWeight="600"
                 mb="12px"
                 lineHeight="1.2"
               >

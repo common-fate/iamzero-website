@@ -20,7 +20,7 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: "Bitter, serif",
+    heading: "Rubik, serif",
     subheading: "Rubik, sans-serif",
     body: "Rubik, sans-serif",
   },
