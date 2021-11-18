@@ -59,6 +59,10 @@ const index = () => {
         <Head>
           <link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
           <script src="/asciinema-player.js" />
+          <meta
+            name="google-site-verification"
+            content="bM7G-WmfN5oIkj3Kl_p8lE8EnM_9SMUfIe6Y6Q-qJiA"
+          />
         </Head>
         <Container
           as="section"
