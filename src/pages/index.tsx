@@ -55,6 +55,7 @@ const index = () => {
       <Layout
         title={`${siteConfig.title}`}
         description="IAM simplified and secure"
+        id="#iamZeroRoot"
       >
         <Head>
           <link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
@@ -331,13 +332,13 @@ const index = () => {
 
           <Box
             as="form"
-            action="https://commonfate.us1.list-manage.com/subscribe/post"
+            action="https://commonfate.us5.list-manage.com/subscribe/post"
             method="POST"
             maxW={{ base: "100%", md: "330px" }}
             p={5}
           >
-            <input type="hidden" name="u" value="0071729f235a2628f4afd9133" />
-            <input type="hidden" name="id" value="2a855c4ea2" />
+            <input type="hidden" name="u" value="69860be79239e5e8d492037c9" />
+            <input type="hidden" name="id" value="2adfac0c83" />
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
