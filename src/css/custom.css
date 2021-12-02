@@ -36,7 +36,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Bitter";
+  font-family: "Rubik";
+  /* font-weight: 300; */
 }
 
 .docusaurus-highlight-code-line {
