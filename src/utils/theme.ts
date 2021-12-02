@@ -45,5 +45,6 @@ const theme = extendTheme({
       },
     },
   },
-});
+  cssVarPrefix: "iamZero",
+} as ThemeConfig);
 export default theme;
