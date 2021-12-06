@@ -25,7 +25,7 @@ import {
 import Head from "@docusaurus/Head";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import React from "react";
+import React, { useState } from "react";
 import { SiGnubash } from "react-icons/si";
 import { Link } from "react-router-dom";
 import FeatureBox from "../components/FeatureBox";
@@ -49,6 +49,7 @@ const MAX_WIDTH = "1200px";
 
 const index = () => {
   const { siteConfig } = useDocusaurusContext();
+  const [emailInput, setEmailInput] = useState();
 
   return (
     <ChakraProvider theme={theme}>
@@ -330,15 +331,7 @@ const index = () => {
             <Text>Stay updated on new releases and development progress.</Text>
           </Stack>
 
-          <Box
-            as="form"
-            action="https://commonfate.us5.list-manage.com/subscribe/post"
-            method="POST"
-            maxW={{ base: "100%", md: "330px" }}
-            p={5}
-          >
-            <input type="hidden" name="u" value="69860be79239e5e8d492037c9" />
-            <input type="hidden" name="id" value="2adfac0c83" />
+          <Box maxW={{ base: "100%", md: "330px" }} p={5}>
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
@@ -352,9 +345,30 @@ const index = () => {
                 autoCorrect="off"
                 placeholder="Your email address"
                 focusBorderColor="cfBlue.400"
+                onChange={(e) => setEmailInput(e.target.value)}
               />
             </InputGroup>
-            <Button colorScheme="cfBlue" mt={3} w="100%" type="submit">
+            <Button
+              colorScheme="cfBlue"
+              mt={3}
+              w="100%"
+              type="submit"
+              onClick={() => {
+                var requestOptions = {
+                  method: "POST",
+                  body: emailInput,
+                };
+
+                emailInput &&
+                  fetch(
+                    "https://hooks.zapier.com/hooks/catch/9267921/bm896ey/",
+                    requestOptions
+                  )
+                    .then(() => console.log("success"))
+                    .then(() => setEmailInput(""))
+                    .catch((error) => console.log("error", error));
+              }}
+            >
               Subscribe
             </Button>
           </Box>
